@@ -2,6 +2,8 @@ const sections = document.querySelectorAll('section');
 const ul = document.querySelector('ul');
 const lis = ul.querySelectorAll('li');
 const lis_arr = Array.from(lis);
+const speed = 1000;
+const base = -window.innerHeight / 3;
 let posArr = null;
 
 //load event
@@ -12,7 +14,11 @@ window.addEventListener('resize', modifyPos);
 
 //click event
 lis.forEach((li, idx) => {
-	li.addEventListener('click', () => moveScroll(idx));
+	li.addEventListener('click', (e) => {
+		const isOn = e.currentTarget.classList.contains('on');
+		if (isOn) return;
+		moveScroll(idx);
+	});
 });
 
 //scroll event
@@ -37,7 +43,7 @@ function moveScroll(index) {
 	new Anime(window, {
 		prop: 'scroll',
 		value: posArr[index],
-		duration: 1000,
+		duration: speed,
 	});
 }
 
@@ -46,7 +52,7 @@ function activation() {
 	const scroll = window.scrollY || window.pageYOffset;
 
 	sections.forEach((_, idx) => {
-		if (scroll >= posArr[idx]) {
+		if (scroll >= posArr[idx] + base) {
 			for (const el of lis) el.classList.remove('on');
 			for (const section of sections) section.classList.remove('on');
 			lis[idx].classList.add('on');
