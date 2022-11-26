@@ -1,1 +1,45 @@
 @import 'reset';
+
+section {
+	width: 100%;
+	position: relative;
+
+	&:nth-of-type(1) {
+		height: 1000px;
+		background: pink;
+	}
+	&:nth-of-type(2) {
+		height: 700px;
+		background: lightblue;
+	}
+	&:nth-of-type(3) {
+		height: 1400px;
+		background: orange;
+	}
+	&:nth-of-type(4) {
+		height: 2200px;
+		background: lightgreen;
+	}
+}
+
+ul {
+	position: fixed;
+	top: 50%;
+	transform: translateY(-50%);
+	right: 50px;
+
+	li {
+		width: 10px;
+		height: 10px;
+		border-radius: 5px;
+		background: #fff;
+		margin-bottom: 20px;
+		cursor: pointer;
+		transition: 0.5s;
+
+		&.on {
+			background: #000;
+			height: 100px;
+		}
+	}
+}
