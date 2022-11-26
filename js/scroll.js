@@ -25,6 +25,26 @@ lis.forEach((li, idx) => {
 //scroll event
 window.addEventListener('scroll', activation);
 
+//mousewheel event
+window.addEventListener(
+	'mousewheel',
+	(e) => {
+		e.preventDefault();
+
+		const active = ul.querySelector('li.on');
+		const active_index = lis_arr.indexOf(active);
+
+		if (e.deltaY < 0) {
+			if (active_index === 0) return;
+			moveScroll(active_index - 1);
+		} else {
+			if (active_index === lis.length - 1) return;
+			moveScroll(active_index + 1);
+		}
+	},
+	{ passive: false }
+);
+
 //각 섹션의 세로 위치값을 배열에 저장하는 함수
 function setPos() {
 	posArr = [];
@@ -41,7 +61,6 @@ function modifyPos() {
 
 //세로 스크롤 이동 모션 함수
 function moveScroll(index) {
-	console.log('func called!');
 	new Anime(window, {
 		prop: 'scroll',
 		value: posArr[index],
