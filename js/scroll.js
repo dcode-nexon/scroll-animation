@@ -2,7 +2,7 @@ const sections = document.querySelectorAll('section');
 const ul = document.querySelector('ul');
 const lis = ul.querySelectorAll('li');
 const lis_arr = Array.from(lis);
-const speed = 1000;
+const speed = 500;
 const base = -window.innerHeight / 3;
 let posArr = null;
 
@@ -15,8 +15,9 @@ window.addEventListener('resize', modifyPos);
 //click event
 lis.forEach((li, idx) => {
 	li.addEventListener('click', (e) => {
+		const scroll = window.scrollY;
 		const isOn = e.currentTarget.classList.contains('on');
-		if (isOn) return;
+		if (isOn && scroll === posArr[idx]) return;
 		moveScroll(idx);
 	});
 });
@@ -40,6 +41,7 @@ function modifyPos() {
 
 //세로 스크롤 이동 모션 함수
 function moveScroll(index) {
+	console.log('func called!');
 	new Anime(window, {
 		prop: 'scroll',
 		value: posArr[index],
