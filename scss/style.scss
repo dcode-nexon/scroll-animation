@@ -10,6 +10,29 @@ section {
 	}
 	&:nth-of-type(2) {
 		background: lightblue;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		.svgBox {
+			width: 700px;
+			height: 700px;
+			display: flex;
+			align-items: center;
+
+			path {
+				fill: rgba(0, 0, 0, 0);
+				stroke: #111;
+				stroke-width: 2;
+				transition: fill 1s;
+			}
+
+			&.on {
+				path {
+					fill: rgba(0, 0, 0, 0.8);
+				}
+			}
+		}
 	}
 	&:nth-of-type(3) {
 		background: orange;
