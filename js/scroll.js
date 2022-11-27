@@ -1,15 +1,20 @@
 class MyScroll {
 	constructor(selector, opt) {
-		this.init(selector, opt);
-		this.createBtns();
+		const default_opt = { enableBtns: true, enableWheel: false, speed: 500 };
+		const result = { ...default_opt, ...opt };
+		this.init(selector, result);
+		this.enableBtns && this.createBtns();
 		this.bindingEvent();
 	}
 
 	init(selector, opt) {
 		this.sections = document.querySelectorAll(selector);
+		this.sections_arr = Array.from(this.sections);
 		this.len = this.sections.length;
 		this.speed = opt.speed;
 		this.base = -window.innerHeight / 3;
+		this.enableBtns = opt.enableBtns;
+		this.enableWheel = opt.enableWheel;
 		this.posArr = null;
 	}
 
@@ -21,20 +26,23 @@ class MyScroll {
 		window.addEventListener('resize', () => this.modifyPos());
 
 		//click event
-		this.lis.forEach((li, idx) => {
-			li.addEventListener('click', (e) => {
-				const scroll = window.scrollY;
-				const isOn = e.currentTarget.classList.contains('on');
-				if (isOn && scroll === this.posArr[idx]) return;
-				this.moveScroll(idx);
+		if (this.enableBtns) {
+			this.lis.forEach((li, idx) => {
+				li.addEventListener('click', (e) => {
+					const scroll = window.scrollY;
+					const isOn = e.currentTarget.classList.contains('on');
+					if (isOn && scroll === this.posArr[idx]) return;
+					this.moveScroll(idx);
+				});
 			});
-		});
+		}
 
 		//scroll event
 		window.addEventListener('scroll', () => this.activation());
 
 		//mousewheel event
-		window.addEventListener('mousewheel', (e) => this.moveWheel(e), { passive: false });
+		this.enableWheel &&
+			window.addEventListener('mousewheel', (e) => this.moveWheel(e), { passive: false });
 	}
 
 	//각 섹션의 세로 위치값을 배열에 저장하는 메서드
@@ -46,8 +54,8 @@ class MyScroll {
 	//브라우저 리사이즈시 스크롤 위치값 보정하는 메서드
 	modifyPos() {
 		this.setPos();
-		const active = this.ul.querySelector('li.on');
-		const active_index = this.lis_arr.indexOf(active);
+		const active = this.sections_arr.filter((el) => el.classList.contains('on'))[0];
+		const active_index = this.sections_arr.indexOf(active);
 		window.scroll(0, this.posArr[active_index]);
 	}
 
@@ -63,14 +71,14 @@ class MyScroll {
 	//wheel 이동 모션 메서드
 	moveWheel(e) {
 		e.preventDefault();
-		const active = this.ul.querySelector('li.on');
-		const active_index = this.lis_arr.indexOf(active);
+		const active = this.sections_arr.filter((el) => el.classList.contains('on'))[0];
+		const active_index = this.sections_arr.indexOf(active);
 
 		if (e.deltaY < 0) {
 			if (active_index === 0) return;
 			this.moveScroll(active_index - 1);
 		} else {
-			if (active_index === this.lis.length - 1) return;
+			if (active_index === this.sections.length - 1) return;
 			this.moveScroll(active_index + 1);
 		}
 	}
@@ -81,10 +89,13 @@ class MyScroll {
 
 		this.sections.forEach((_, idx) => {
 			if (scroll >= this.posArr[idx] + this.base) {
-				for (const el of this.lis) el.classList.remove('on');
 				for (const section of this.sections) section.classList.remove('on');
-				this.lis[idx].classList.add('on');
 				this.sections[idx].classList.add('on');
+
+				if (this.enableBtns) {
+					for (const el of this.lis) el.classList.remove('on');
+					this.lis[idx].classList.add('on');
+				}
 			}
 		});
 	}

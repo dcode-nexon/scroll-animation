@@ -11,8 +11,15 @@
   <script defer src="js/scroll.js"></script>
   <script>
     window.onload = () => {
+      /*
       new MyScroll('section', {
-        speed: 500
+        speed: 500,
+        enableBtns: true,
+        enableWheel: false
+      });
+      */
+      new MyScroll('section', {
+        enableWheel: true
       });
     }
   </script>
