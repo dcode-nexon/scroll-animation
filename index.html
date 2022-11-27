@@ -18,19 +18,22 @@
       const btnTop = document.querySelector('.btnTop');
       btnTop.addEventListener('click', () => instance.moveScroll(0));
 
-      //두번째 섹션의 SVG모션에 필요한 커스텀 변수
+      //두번째 섹션 커스텀 모션
       const svgBox = document.querySelector('.svgBox');
       const icon = svgBox.querySelector('path');
       const icon_len = 930;
       icon.style.strokeDasharray = icon_len;
       icon.style.strokeDashoffset = icon_len;
 
-      //두번째 섹션 스크롤 연동 커스텀 이벤트
+      //네번째 섹션 커스텀 모션
+      const h1 = document.querySelector('.box4 h1');
+      const h2 = document.querySelector('.box4  h2');
+      const rot = document.querySelector('.rot');
+
       window.addEventListener('scroll', () => {
         const scroll = window.scrollY || window.pageYOffset;
 
         let scroll2 = (scroll - (instance.posArr[1] + instance.base)) * 3;
-
         if (scroll > instance.posArr[1] + instance.base) {
           if (scroll2 > icon_len) {
             scroll2 = 0;
@@ -41,6 +44,16 @@
           icon.style.strokeDashoffset = icon_len - scroll2;
         } else {
           icon.style.strokeDashoffset = icon_len;
+        }
+
+        let scroll3 = (scroll - (instance.posArr[3] + instance.base));
+        if (scroll > instance.posArr[3] + instance.base) {
+          h1.style.left = scroll3 + 'px';
+          h2.style.left = scroll3 * 2 + 'px';
+          rot.style.transform = `rotate(${scroll3}deg) scale(${1 + scroll3 / 500})`;
+          rot.style.opacity = 1 - scroll3 / 500;
+        } else {
+          rot.style.transform = 'rotate(0deg)';
         }
       })
 
@@ -71,7 +84,11 @@
       </div>
     </section>
 
-    <section></section>
+    <section class="box4">
+      <h1>SCROLL</h1>
+      <h2>HORIZONTAL</h2>
+      <article class="rot"></article>
+    </section>
 
     <button class="btnTop">top</button>
   </main>
