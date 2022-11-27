@@ -11,16 +11,12 @@
   <script defer src="js/scroll.js"></script>
   <script>
     window.onload = () => {
-      /*
-      new MyScroll('section', {
-        speed: 500,
-        enableBtns: true,
+      const instance = new MyScroll('section', {
         enableWheel: false
       });
-      */
-      new MyScroll('section', {
-        enableWheel: true
-      });
+
+      const btnTop = document.querySelector('.btnTop');
+      btnTop.addEventListener('click', () => instance.moveScroll(0));
     }
   </script>
 </head>
@@ -39,6 +35,8 @@
       </div>
     </section>
     <section></section>
+
+    <button class="btnTop">top</button>
   </main>
 
   <!-- <ul>
